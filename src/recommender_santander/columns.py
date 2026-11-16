@@ -24,7 +24,8 @@ COLUMN_NAMES = {
     "nomprov": "province_name",
     "ind_actividad_cliente": "is_active_customer",
     "renta": "household_income",
-    "segmento": "customer_segment",
+    "segmento": "customer_segment", 
+    # Now the product
     "ind_ahor_fin_ult1": "has_savings_account",
     "ind_aval_fin_ult1": "has_guarantees",
     "ind_cco_fin_ult1": "has_current_account",
@@ -50,9 +51,9 @@ COLUMN_NAMES = {
     "ind_nom_pens_ult1": "has_pension_income",
     "ind_recibo_ult1": "has_direct_debit"
 }
-
+# The following are the product offered by the bank and that we want to recommand
 PRODUCTS = [name for name in COLUMN_NAMES.values() if name.startswith("has_")]
-NUMERIC_FEATURES = ['age', 'tenure_months', 'household_income', 'snapshot_month']
+NUMERIC_FEATURES = ['age', 'tenure_months', 'snapshot_month', 'household_income']
 CATEGORICAL_FEATURES = [
     "sex",
     "residence_country",

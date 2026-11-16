@@ -1,0 +1,13 @@
+# Upload only the files needed to build and serve the model.
+*
+!Dockerfile
+!.dockerignore
+!pyproject.toml
+!requirements.txt
+!README.md
+!src/
+!src/**
+!predict.py
+!artifacts/
+!artifacts/model.joblib
+**/__pycache__/

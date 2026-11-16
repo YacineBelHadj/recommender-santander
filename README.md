@@ -10,7 +10,7 @@ The [Santander dataset](https://www.kaggle.com/competitions/santander-product-re
 - `train.py`: train and save the two-stage CatBoost model.
 - `predict.py`: serve that model with FastAPI.
 - `src/recommender_santander/`: shared preparation, features, and scoring.
-- `reports/`: saved training metrics and local deployment evidence.
+- `reports/`: saved training metrics and deployment evidence.
 - `experiments/`: optional history/learning-to-rank comparison and its results; not used by the API.
 - `examples/` and `tests/`: example requests and checks.
 
@@ -121,7 +121,61 @@ uv run pytest -q
 
 Train before the API integration test. Tests cover previous-month features, gaps, unknown holdings, MAP@7 denominators, threshold selection, ownership filtering, and abstention. Dependencies are in `pyproject.toml` and `uv.lock`; `requirements.txt` is the locked runtime export used by Docker. Polars reads the data, scikit-learn fits logistic regression, CatBoost fits tree models, and FastAPI serves them.
 
-The evaluation uses one historical holdout month and complete consecutive labels. Cold-start behavior and probability calibration remain untested; the optional ranking experiment below adds rolling validation. Only load model files produced by this project. Cloud deployment is optional and is not included. The course also requires three peer reviews.
+The evaluation uses one historical holdout month and complete consecutive labels. Cold-start behavior and probability calibration remain untested; the optional ranking experiment below adds rolling validation. Only load model files produced by this project. The course also requires three peer reviews.
+
+## Deploy to AWS Elastic Beanstalk
+
+The API was deployed with the Elastic Beanstalk CLI in Stockholm (`eu-north-1`). Install the project dependencies with `uv sync --locked` and train the model first so `artifacts/model.joblib` exists. The EB CLI is included in the development dependencies; a separate AWS CLI installation is not required.
+
+In AWS IAM, create a deployment user, attach `AdministratorAccess-AWSElasticBeanstalk`, and create an access key for the CLI. Keep the credentials outside the repository and enter them only when prompted. Use a region supported by your AWS account.
+
+From the project root:
+
+```sh
+uv run eb init -p docker -r eu-north-1 santander-recommender
+uv run eb create --single --instance_type t3.small
+```
+
+`eb init` selects the application, region, and Docker platform and saves the settings in `.elasticbeanstalk/config.yml`. When `eb create` asks for an environment name, enter `santander-recommender-dev`. It provisions one EC2 instance with 2 vCPUs and 2 GiB RAM, without a load balancer. AWS resource charges apply while the environment exists.
+
+Beanstalk uploads the source files to S3, builds the Docker image on the EC2 instance, and starts the API. No manual Docker image push is needed. `.ebignore` includes the model and application files while excluding datasets, notebooks, and `.env`.
+
+Check the deployment:
+
+```sh
+uv run eb status
+```
+
+Wait for `Status: Ready` and `Health: Green`. Copy the CNAME from the output and open `http://YOUR-CNAME/docs`. Expand **POST /recommend**, select **Try it out**, paste [this example request](examples/request_selected.json), and click **Execute**. Replace the generated Swagger placeholder values with the example before sending it.
+
+You can also call the API from the terminal:
+
+```sh
+curl http://YOUR-CNAME/health
+curl -X POST http://YOUR-CNAME/recommend \
+  -H 'Content-Type: application/json' \
+  --data-binary @examples/request_selected.json
+```
+
+### Deployment demonstration
+
+The screenshot below shows the API documentation served from `santander-recommender-dev.eu-north-1.elasticbeanstalk.com` on November 16, 2026. It confirms that the documentation page was reachable; the displayed JSON is the generated request template, not a prediction response. The demo environment may be terminated after use to avoid ongoing charges. Recorded example responses are available in the [local Docker demonstration](reports/deployment/README.md).
+
+![FastAPI documentation running on AWS Elastic Beanstalk](reports/deployment/beanstalk.png)
+
+For later code or model updates:
+
+```sh
+uv run eb deploy
+```
+
+When finished, delete the running environment and confirm its name when prompted:
+
+```sh
+uv run eb terminate
+```
+
+This removes the environment's EC2 instance and associated resources. Saved application versions and S3 files can remain; local code and the model are unchanged. Use `eb create` to deploy again later.
 
 ## Additional recommendation experiments
 
