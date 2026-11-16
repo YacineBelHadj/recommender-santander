@@ -1,0 +1,16 @@
+{
+  "profile": {
+    "age": 35,
+    "tenure_months": 24,
+    "household_income": 45000,
+    "snapshot_month": 5,
+    "sex": "H",
+    "residence_country": "ES",
+    "customer_segment": "02 - PARTICULARES",
+    "joining_channel": "KHE",
+    "is_active_customer": "1",
+    "relationship_month_start": "A"
+  },
+  "owned_products": ["has_current_account", "has_credit_card"],
+  "k": 7
+}

@@ -1,0 +1,24 @@
+{
+  "selected_model": "lightgbm_ranker",
+  "history": true,
+  "selection": "mean MAP@7 over February, March, April; six training target months per fold",
+  "mean_validation_map_at_7": 0.02705158712610982,
+  "customers_sampled": 50000,
+  "seed": 42,
+  "may_status": "exploratory reference: this month was inspected in earlier experiments",
+  "may_map_all": 0.026116221852853866,
+  "may_map_actual_buyers": 0.8530712520857399,
+  "may_map_selected": 0.2633227598842485,
+  "may_map_gated_all": 0.010071386657288378,
+  "classifier": {
+    "threshold": 0.1787492253559631,
+    "customers": 48474,
+    "selected_customers": 1854,
+    "selected_actual_buyers": 541,
+    "coverage": 0.03824730783512811,
+    "precision": 0.2918015102481122,
+    "recall": 0.36455525606469,
+    "f1": 0.3241461953265428,
+    "average_precision": 0.25817021430630765
+  }
+}

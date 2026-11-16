@@ -1,0 +1,4 @@
+population,customers,map_at_7
+All customers (ungated),48474,0.023521869193827358
+Actual acquiring customers (known afterward),1484,0.7683282259444658
+Classifier-selected customers,1854,0.2099559510967278

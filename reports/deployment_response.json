@@ -1,0 +1,74 @@
+{
+  "tested_at": "2026-11-15T22:20:52.952440+01:00",
+  "image": "sha256:379779bf4150988b187cbffc4979f79f0aeb866ad0669c23e6f30b6a599096c2",
+  "health_status": 200,
+  "health": {
+    "status": "ok",
+    "model": "catboost"
+  },
+  "recommendation_status": 200,
+  "request": {
+    "profile": {
+      "age": 35,
+      "tenure_months": 1,
+      "household_income": 45000,
+      "snapshot_month": 5,
+      "sex": "H",
+      "residence_country": "ES",
+      "customer_segment": "02 - PARTICULARES",
+      "joining_channel": "KHE",
+      "is_active_customer": "1",
+      "relationship_month_start": "A"
+    },
+    "owned_products": [
+      "has_current_account",
+      "has_payroll_account"
+    ],
+    "k": 7
+  },
+  "response": {
+    "model": "catboost",
+    "should_recommend": true,
+    "buyer_score": 0.32122759239097776,
+    "buyer_threshold": 0.1787492253559631,
+    "recommendations": [
+      {
+        "product": "has_direct_debit",
+        "ranking_score": 0.885843
+      },
+      {
+        "product": "has_credit_card",
+        "ranking_score": 0.673945
+      },
+      {
+        "product": "has_payroll",
+        "ranking_score": 0.673945
+      },
+      {
+        "product": "has_pension_income",
+        "ranking_score": 0.673945
+      },
+      {
+        "product": "has_e_account",
+        "ranking_score": 0.18507
+      },
+      {
+        "product": "has_guarantees",
+        "ranking_score": 0.005579
+      },
+      {
+        "product": "has_mas_particular_account",
+        "ranking_score": 0.005579
+      }
+    ]
+  },
+  "invalid_product_status": 422,
+  "abstention_status": 200,
+  "abstention_response": {
+    "model": "catboost",
+    "should_recommend": false,
+    "buyer_score": 0.07480338942794379,
+    "buyer_threshold": 0.1787492253559631,
+    "recommendations": []
+  }
+}

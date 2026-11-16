@@ -1,0 +1,69 @@
+{
+  "selected_model": "catboost",
+  "selected_params": {
+    "depth": 6,
+    "iterations": 150
+  },
+  "seed": 42,
+  "sample_customers": 50000,
+  "sample_rows": 714263,
+  "training_target_months": "2015-10 through 2016-03",
+  "training_pairs": 282416,
+  "sampled_candidate_rows": 203824,
+  "negative_sampling_fraction": 0.03,
+  "validation_month": "2016-04",
+  "validation_map_at_7": 0.021377922484350848,
+  "test_month": "2016-05",
+  "selected_model_test": {
+    "map_at_7": 0.023521869193827358,
+    "customers": 48474,
+    "customers_with_additions": 1484,
+    "map_at_7_positive_customers": 0.7683282259444658
+  },
+  "popularity_test": {
+    "map_at_7": 0.01969100273686237,
+    "customers": 48474,
+    "customers_with_additions": 1484,
+    "map_at_7_positive_customers": 0.6431951931716082
+  },
+  "buyer_classifier": {
+    "model": "catboost",
+    "depth": 4,
+    "iterations": 150,
+    "threshold_selection": "maximum F1 on April validation",
+    "threshold": 0.1787492253559631,
+    "validation": {
+      "threshold": 0.1787492253559631,
+      "customers": 48286,
+      "selected_customers": 1826,
+      "selected_actual_buyers": 474,
+      "coverage": 0.0378163442819865,
+      "precision": 0.25958378970427165,
+      "recall": 0.3505917159763314,
+      "f1": 0.2983008181246067,
+      "average_precision": 0.22285312063189908
+    }
+  },
+  "two_stage_test": {
+    "map_at_7_all_customers": 0.023521869193827358,
+    "map_at_7_actual_buyers": 0.7683282259444658,
+    "map_at_7_predicted_buyers": 0.2099559510967278,
+    "map_at_7_gated_all_customers": 0.008030249893413652,
+    "actual_buyers": 1484,
+    "classifier": {
+      "threshold": 0.1787492253559631,
+      "customers": 48474,
+      "selected_customers": 1854,
+      "selected_actual_buyers": 541,
+      "coverage": 0.03824730783512811,
+      "precision": 0.2918015102481122,
+      "recall": 0.36455525606469,
+      "f1": 0.3241461953265428,
+      "average_precision": 0.25817021430630765
+    }
+  },
+  "feature_importance_model": "catboost",
+  "evaluated_population": "consecutive pairs with all 24 holdings observed at both dates",
+  "test_month_sample_rows": 48718,
+  "sklearn_version": "1.9.1"
+}

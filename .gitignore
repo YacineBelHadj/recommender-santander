@@ -1,0 +1,20 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# Competition data and generated samples
+data/
+.env
+.env.*
+
+# Trained artifacts are rebuilt locally
+artifacts/
+.pytest_cache/
+!.env.example

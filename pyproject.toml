@@ -1,0 +1,37 @@
+[project]
+name = "recommender-santander"
+version = "0.1.0"
+description = "Banking product recommendations from Santander customer profiles and monthly ownership histories."
+readme = "README.md"
+authors = [
+    { name = "Yacine Bel-Hadj", email = "yacine.bel-hadj@vub.be" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "catboost>=1.2.10",
+    "dynaconf>=3.3.5",
+    "fastapi>=0.163.1",
+    "joblib>=1.6.0",
+    "kagglehub>=1.0.3",
+    "numpy>=2.5.4",
+    "pandas>=3.1.1",
+    "polars>=2.1.0",
+    "pyarrow>=26.0.1",
+    "python-dotenv>=1.2.4",
+    "scikit-learn>=1.9.1",
+    "uvicorn>=0.54.0",
+]
+
+[build-system]
+requires = ["uv_build>=0.13.7,<0.14.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "awsebcli>=3.27.7",
+    "httpx>=0.28.1",
+    "jupyterlab>=4.6.6",
+    "lightgbm>=4.7.0",
+    "matplotlib>=3.11.2",
+    "pytest>=9.2.0",
+]
