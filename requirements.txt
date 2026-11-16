@@ -27,8 +27,6 @@ contourpy==1.4.0
     # via matplotlib
 cycler==0.12.1
     # via matplotlib
-dynaconf==3.3.5
-    # via recommender-santander
 fastapi==0.163.1
     # via recommender-santander
 fonttools==4.68.0

@@ -111,7 +111,7 @@ def predictions(model, pairs):
     return per_customer_ap(scores, actual), actual.sum(axis=1) > 0
 
 
-def run(source, customers=5_000, report_dir=Path("reports")):
+def run(source, customers=5_000, report_dir=Path(__file__).resolve().parent / "results"):
     sample = load_sample(source, customers=customers, seed=42)
     pairs = monthly_pairs(sample).join(history_features(sample), on=["customer_id", "feature_date"], how="left", maintain_order="left")
     configs = [(kind, history) for kind in ["classifier", "catboost_ranker", "lightgbm_ranker"] for history in [False, True]]

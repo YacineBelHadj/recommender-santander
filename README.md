@@ -4,6 +4,18 @@ Predict whether a customer will acquire a new banking product next month. If the
 
 The [Santander dataset](https://www.kaggle.com/competitions/santander-product-recommendation/data) has 13.65 million monthly snapshots, 956,645 customers, and 24 product indicators. Training covers January 2015–May 2016. Kaggle notes that this sample does not contain real Santander Spain customers or represent its customer base.
 
+## Files to start with
+
+- `notebooks/`: data exploration and model results.
+- `train.py`: train and save the two-stage CatBoost model.
+- `predict.py`: serve that model with FastAPI.
+- `src/recommender_santander/`: shared preparation, features, and scoring.
+- `reports/`: saved training metrics and local deployment evidence.
+- `experiments/`: optional history/learning-to-rank comparison and its results; not used by the API.
+- `examples/` and `tests/`: example requests and checks.
+
+`pyproject.toml` and `uv.lock` define the environment. `requirements.txt` is generated for the Docker build. The Beanstalk configuration is in `.elasticbeanstalk/`.
+
 ## Install and download
 
 Use Python 3.12 and [uv](https://docs.astral.sh/uv/getting-started/installation/):
@@ -101,7 +113,7 @@ docker build -t santander-recommender .
 docker run --rm --name santander-recommender -p 127.0.0.1:8000:8000 santander-recommender
 ```
 
-Stop the local Uvicorn process before using the same port for Docker. Use the curl commands above. The image includes the model and locked runtime dependencies, excluding data and `.env`. [Recorded Docker requests and responses](reports/deployment.md) include both recommendation and abstention examples.
+Stop the local Uvicorn process before using the same port for Docker. Use the curl commands above. The image includes the model and locked runtime dependencies, excluding data and `.env`. [Recorded Docker requests and responses](reports/deployment/README.md) include both recommendation and abstention examples.
 
 ```sh
 uv run pytest -q
@@ -109,7 +121,7 @@ uv run pytest -q
 
 Train before the API integration test. Tests cover previous-month features, gaps, unknown holdings, MAP@7 denominators, threshold selection, ownership filtering, and abstention. Dependencies are in `pyproject.toml` and `uv.lock`; `requirements.txt` is the locked runtime export used by Docker. Polars reads the data, scikit-learn fits logistic regression, CatBoost fits tree models, and FastAPI serves them.
 
-The evaluation uses one historical holdout month and complete consecutive labels. Cold-start behavior, rolling validation, and probability calibration remain untested. Only load model files produced by this project. Cloud deployment is optional and is not included. The course also requires three peer reviews.
+The evaluation uses one historical holdout month and complete consecutive labels. Cold-start behavior and probability calibration remain untested; the optional ranking experiment below adds rolling validation. Only load model files produced by this project. Cloud deployment is optional and is not included. The course also requires three peer reviews.
 
 ## Additional recommendation experiments
 
@@ -123,6 +135,6 @@ Use rolling validation on February, March, and April 2016; each fit uses the pre
 
 History features are computed at the feature snapshot, before its target: recent acquisitions and removals, observed history length, ownership count, time since an observed acquisition, and activity changes. Rolling windows restart after gaps or unknown holdings. Rankers train on groups with both positive and negative labels, using all eligible products in those groups; evaluation still includes all customers. The classifier keeps its original 3% negative sampling. CatBoostRanker uses a MAP-oriented YetiRank objective; LambdaRank optimizes NDCG. Both are evaluated with the same AP@7 code.
 
-Results are saved to `reports/ranking_folds.csv`, `ranking_comparison.csv`, and `ranking_metrics.json`, and displayed at the end of the modeling notebook. This experiment does not overwrite the serving artifact: a history-based model would require historical inputs that the current single-snapshot API does not accept.
+Results are saved under `experiments/results/` as `ranking_folds.csv`, `ranking_comparison.csv`, and `ranking_metrics.json`, and displayed at the end of the modeling notebook. This experiment does not overwrite the serving artifact: a history-based model would require historical inputs that the current single-snapshot API does not accept.
 
-**Measured comparison:** LightGBM LambdaRank with history averaged **0.02705** MAP@7 across February–April, versus **0.02460** for the original classifier. See [experiment results](reports/ranking_results.md) for every model and the exploratory May comparison.
+**Measured comparison:** LightGBM LambdaRank with history averaged **0.02705** MAP@7 across February–April, versus **0.02460** for the original classifier. See [experiment results](experiments/results/ranking_results.md) for every model and the exploratory May comparison.

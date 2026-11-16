@@ -56,6 +56,6 @@ Recommendation endpoint: **HTTP 200**.
 
 The smoke test verified classifier-selected recommendations, classifier abstention with an empty list for `examples/request.json`, exclusion of all already-owned products, and **HTTP 422** for an invalid product name. The test container was stopped after verification; the dynamic port above is a recorded test endpoint, not a persistent deployment.
 
-![Recorded Docker HTTP request and response](deployment.png)
+![Recorded Docker HTTP request and response](response.png)
 
-The image renders captured test output, rather than a browser screenshot. Raw request/response evidence is in [deployment_response.json](deployment_response.json). Reproduce the service using the fixed-port commands in the [README](../README.md).
+The image renders captured test output, rather than a browser screenshot. Raw request/response evidence is in [response.json](response.json). Reproduce the service using the fixed-port commands in the [README](../../README.md).

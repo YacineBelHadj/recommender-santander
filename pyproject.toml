@@ -9,7 +9,6 @@ authors = [
 requires-python = ">=3.12"
 dependencies = [
     "catboost>=1.2.10",
-    "dynaconf>=3.3.5",
     "fastapi>=0.163.1",
     "joblib>=1.6.0",
     "kagglehub>=1.0.3",
